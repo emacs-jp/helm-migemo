@@ -4,12 +4,12 @@
 ;; Copyright (C) 2012 Yuhei Maeda <yuhei.maeda_at_gmail.com>
 ;; Author: rubikitch <rubikitch@ruby-lang.org>
 ;; Maintainer: Yuhei Maeda <yuhei.maeda_at_gmail.com>
-;; Version: 1.19
-;; Package-version: 1.19
-;; Package-Requires: ((helm "20120811"))
+;; Version: 1.20
+;; Package-version: 1.20
+;; Package-Requires: ((helm "1.5.3") (migemo "1.9"))
 ;; Created: 2009-04-13 
 ;; Keywords: matching, convenience, tools, i18n
-;; URL: https://github.com/myuhe/helm-migemo.el
+;; URL: https://github.com/emacs-helm/helm-migemo
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -63,6 +63,9 @@
 ;;; History:
 
 ;; $Log: helm-migemo.el,v $
+
+;; Revision 1.19  2013-08-20 20:01:12  myuhe
+;; Shutup byte-compiler
 
 ;; Revision 1.19  2012-08-18 02:16:22  myuhe
 ;; Port to helm.
@@ -145,14 +148,13 @@ With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."
     (setq helm-previous-migemo-info (cons pattern (migemo-get-pattern pattern))))
   (string-match (cdr helm-previous-migemo-info) str))
 
-(when (memq 'helm-compile-source--match-plugin helm-compile-source-functions)
   (defun* helm-mp-3migemo-match (str &optional (pattern helm-pattern))
     (loop for (pred . re) in (helm-mp-3-get-patterns pattern)
           always (funcall pred (helm-string-match-with-migemo str re))))
   (defun helm-mp-3migemo-search (pattern &rest ignore)
-    (helm-mp-3-search-base migemo-forward migemo-forward bol eol))
+    (helm-mp-3-search-base pattern 'migemo-forward 'migemo-forward))
   (defun helm-mp-3migemo-search-backward (pattern &rest ignore)
-    (helm-mp-3-search-base migemo-backward migemo-backward eol bol)))
+    (helm-mp-3-search-base pattern 'migemo-backward 'migemo-backward))
 ;; (helm-string-match-with-migemo "日本語入力" "nihongo")
 ;; (helm-string-match-with-migemo "日本語入力" "nyuuryoku")
 ;; (helm-mp-3migemo-match "日本語入力" "nihongo nyuuryoku")
@@ -162,18 +164,12 @@ With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."
     (let* ((match-identity-p 
             (or (assoc 'candidates-in-buffer source)
                 (equal '(identity) (assoc-default 'match source))))
-           (use-match-plugin
-            (memq 'helm-compile-source--match-plugin helm-compile-source-functions))
-           (matcher (if use-match-plugin
-                        'helm-mp-3migemo-match
-                      'helm-string-match-with-migemo))
+           
+           (matcher 'helm-mp-3migemo-match)
            (searcher (if (assoc 'search-from-end source)
-                         (if use-match-plugin
-                             'helm-mp-3migemo-search-backward
-                           'migemo-backward)
-                       (if use-match-plugin
-                           'helm-mp-3migemo-search
-                         'migemo-forward))))
+                         
+                           'helm-mp-3migemo-search-backward
+                         'helm-mp-3migemo-search)))
       (cond (helm-use-migemo
              `((delayed)
                (search ,@(assoc-default 'search source) ,searcher)

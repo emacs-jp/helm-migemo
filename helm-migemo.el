@@ -129,7 +129,7 @@
 ;;; Code:
 
 (require 'cl-lib)
-(eval-when-compile (require 'helm))
+(require 'helm)
 (require 'migemo nil t)
 (require 'helm-match-plugin nil t)
 (defvar helm-use-migemo nil

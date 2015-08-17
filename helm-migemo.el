@@ -131,7 +131,6 @@
 (require 'cl-lib)
 (require 'helm)
 (require 'migemo nil t)
-(require 'helm-match-plugin nil t)
 (defvar helm-use-migemo nil
   "[Internal] If non-nil, `helm' is migemo-ized.")
 (defun helm-migemo (with-migemo &rest helm-args)

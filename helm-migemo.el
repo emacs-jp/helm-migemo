@@ -6,7 +6,7 @@
 ;; Maintainer: Yuhei Maeda <yuhei.maeda_at_gmail.com>
 ;; Version: 1.20
 ;; Package-version: 1.20
-;; Package-Requires: ((helm "1.5.3") (migemo "1.9") (cl-lib "0.5"))
+;; Package-Requires: ((helm "1.7.8") (migemo "1.9") (cl-lib "0.5"))
 ;; Created: 2009-04-13 
 ;; Keywords: matching, convenience, tools, i18n
 ;; URL: https://github.com/emacs-helm/helm-migemo
@@ -149,12 +149,12 @@ With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."
   (string-match (cdr helm-previous-migemo-info) str))
 
   (cl-defun helm-mp-3migemo-match (str &optional (pattern helm-pattern))
-    (cl-loop for (pred . re) in (helm-mp-3-get-patterns pattern)
+    (cl-loop for (pred . re) in (helm-mm-3-get-patterns pattern)
              always (funcall pred (helm-string-match-with-migemo str re))))
   (defun helm-mp-3migemo-search (pattern &rest ignore)
-    (helm-mp-3-search-base pattern 'migemo-forward 'migemo-forward))
+    (helm-mm-3-search-base pattern 'migemo-forward 'migemo-forward))
   (defun helm-mp-3migemo-search-backward (pattern &rest ignore)
-    (helm-mp-3-search-base pattern 'migemo-backward 'migemo-backward))
+    (helm-mm-3-search-base pattern 'migemo-backward 'migemo-backward))
 ;; (helm-string-match-with-migemo "日本語入力" "nihongo")
 ;; (helm-string-match-with-migemo "日本語入力" "nyuuryoku")
 ;; (helm-mp-3migemo-match "日本語入力" "nihongo nyuuryoku")

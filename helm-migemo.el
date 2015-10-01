@@ -1,13 +1,12 @@
 ;;; helm-migemo.el --- Migemo plug-in for helm -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2007-2012 rubikitch
-;; Copyright (C) 2012 Yuhei Maeda <yuhei.maeda_at_gmail.com>
+;; Copyright (C) 2015 Yuhei Maeda <yuhei.maeda_at_gmail.com>
 ;; Author: rubikitch <rubikitch@ruby-lang.org>
 ;; Maintainer: Yuhei Maeda <yuhei.maeda_at_gmail.com>
-;; Version: 1.20
-;; Package-version: 1.20
+;; Version: 1.21
 ;; Package-Requires: ((helm-core "1.7.8") (migemo "1.9") (cl-lib "0.5"))
-;; Created: 2009-04-13 
+;; Created: 2009-04-13
 ;; Keywords: matching, convenience, tools, i18n
 ;; URL: https://github.com/emacs-jp/helm-migemo
 
@@ -60,72 +59,6 @@
 ;; . migemo-forward) and (delayed) scrambles *helm* buffer. Maybe
 ;; because of collision of `migemo-process' and `run-with-idle-timer'
 
-;;; History:
-
-;; $Log: helm-migemo.el,v $
-
-;; Revision 1.19  2013-08-20 20:01:12  myuhe
-;; Shutup byte-compiler
-
-;; Revision 1.19  2012-08-18 02:16:22  myuhe
-;; Port to helm.
-;;
-;; Revision 1.18  2009-06-07 17:52:22  rubikitch
-;; New macro `helm-migemize-command'.
-;;
-;; Revision 1.17  2009/06/04 20:32:00  rubikitch
-;; migemo is soft-required now; this file has no effect unless migemo is installed.
-;;
-;; Revision 1.16  2008/10/03 20:43:18  rubikitch
-;; Use with helm-match-plugin.el
-;;
-;; Revision 1.15  2008/10/03 20:01:46  rubikitch
-;; refactoring
-;;
-;; Revision 1.14  2008/08/25 08:29:02  rubikitch
-;; `helm-migemo': helm-args
-;;
-;; Revision 1.13  2008/08/24 20:39:53  rubikitch
-;; prevent the unit test from being byte-compiled.
-;;
-;; Revision 1.12  2008/08/24 18:01:25  rubikitch
-;; *** empty log message ***
-;;
-;; Revision 1.11  2008/08/24 08:23:30  rubikitch
-;; Rename `helm-candidates-buffer' -> `helm-candidate-buffer'
-;;
-;; Revision 1.10  2008/08/24 01:54:21  rubikitch
-;; migemo attribute
-;;
-;; Revision 1.9  2008/08/19 21:38:09  rubikitch
-;; match attribute bug fix
-;;
-;; Revision 1.8  2008/08/19 21:30:29  rubikitch
-;; plug-in
-;;
-;; Revision 1.7  2008/08/10 22:45:02  rubikitch
-;; Bug info
-;;
-;; Revision 1.6  2008/08/08 03:40:51  rubikitch
-;; require migemo
-;;
-;; Revision 1.5  2008/08/08 03:38:34  rubikitch
-;; add search attribute
-;; unit tests
-;;
-;; Revision 1.4  2007/12/26 08:36:01  rubikitch
-;; changed match priority
-;;
-;; Revision 1.3  2007/12/25 19:55:59  rubikitch
-;; patch is not needed anymore.
-;;
-;; Revision 1.2  2007/12/25 13:05:46  rubikitch
-;; speed up by memoization
-;;
-;; Revision 1.1  2007/12/25 12:03:25  rubikitch
-;; Initial revision
-;;
-
 ;;; Code:
 
 (require 'cl-lib)
@@ -164,13 +97,13 @@ With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."
 (defun helm-compile-source--migemo (source)
   (if (not (featurep 'migemo))
       source
-    (let* ((match-identity-p 
+    (let* ((match-identity-p
             (or (assoc 'candidates-in-buffer source)
                 (equal '(identity) (assoc-default 'match source))))
-           
+
            (matcher 'helm-mp-3migemo-match)
            (searcher (if (assoc 'search-from-end source)
-                         
+
                            'helm-mp-3migemo-search-backward
                          'helm-mp-3migemo-search)))
       (cond (helm-use-migemo

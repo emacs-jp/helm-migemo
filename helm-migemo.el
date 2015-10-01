@@ -1,4 +1,4 @@
-;;; helm-migemo.el --- Migemo plug-in for helm
+;;; helm-migemo.el --- Migemo plug-in for helm -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2007-2012 rubikitch
 ;; Copyright (C) 2012 Yuhei Maeda <yuhei.maeda_at_gmail.com>
@@ -151,9 +151,9 @@ With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."
   (cl-defun helm-mp-3migemo-match (str &optional (pattern helm-pattern))
     (cl-loop for (pred . re) in (helm-mm-3-get-patterns pattern)
              always (funcall pred (helm-string-match-with-migemo str re))))
-  (defun helm-mp-3migemo-search (pattern &rest ignore)
+  (defun helm-mp-3migemo-search (pattern &rest _ignore)
     (helm-mm-3-search-base pattern 'migemo-forward 'migemo-forward))
-  (defun helm-mp-3migemo-search-backward (pattern &rest ignore)
+  (defun helm-mp-3migemo-search-backward (pattern &rest _ignore)
     (helm-mm-3-search-base pattern 'migemo-backward 'migemo-backward))
 ;; (helm-string-match-with-migemo "日本語入力" "nihongo")
 ;; (helm-string-match-with-migemo "日本語入力" "nyuuryoku")

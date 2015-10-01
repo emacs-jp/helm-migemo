@@ -131,8 +131,11 @@
 (require 'cl-lib)
 (require 'helm)
 (require 'migemo nil t)
+
 (defvar helm-use-migemo nil
   "[Internal] If non-nil, `helm' is migemo-ized.")
+
+;;;###autoload
 (defun helm-migemo (with-migemo &rest helm-args)
   "`helm' with migemo extension.
 With prefix arugument, `helm-pattern' is migemo-ized, otherwise normal `helm'."

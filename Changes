@@ -1,5 +1,8 @@
 History: helm-migemo.el
 
+Revision 1.22  2015-10-02 15:20:00  syohex
+ - Fix issue for candidates-in-buffer(#6, #7 Reported by tam17aki)
+
 Revision 1.21  2015-10-02 00:14:00  syohex
  - Move repository
  - Clean up code
